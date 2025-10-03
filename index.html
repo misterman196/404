@@ -22,7 +22,9 @@
         }
 
         body {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: 
+                linear-gradient(135deg, var(--primary), var(--secondary)),
+                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%232c3e50"/><path d="M0 0L100 100M100 0L0 100" stroke="%2334495e" stroke-width="1"/></svg>');
             color: var(--light);
             line-height: 1.6;
             overflow-x: hidden;
@@ -126,7 +128,10 @@
         .hero {
             padding: 180px 0 100px;
             text-align: center;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%232c3e50"/><path d="M0 0L100 100M100 0L0 100" stroke="%2334495e" stroke-width="1"/></svg>');
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .hero h1 {
