@@ -26,6 +26,7 @@
             color: var(--light);
             line-height: 1.6;
             overflow-x: hidden;
+            min-height: 100vh;
         }
 
         .container {
@@ -160,8 +161,8 @@
             box-shadow: 0 8px 20px rgba(52, 152, 219, 0.4);
         }
 
-        /* Features Section */
-        .features {
+        /* Games Section */
+        .games {
             padding: 100px 0;
             background: var(--dark);
         }
@@ -182,42 +183,6 @@
             bottom: -15px;
             left: 50%;
             transform: translateX(-50%);
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
-        .feature-card {
-            background: var(--secondary);
-            padding: 30px;
-            border-radius: 10px;
-            text-align: center;
-            transition: transform 0.3s;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .feature-card:hover {
-            transform: translateY(-10px);
-        }
-
-        .feature-icon {
-            font-size: 40px;
-            color: var(--accent);
-            margin-bottom: 20px;
-        }
-
-        .feature-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-        }
-
-        /* Games Section */
-        .games {
-            padding: 100px 0;
-            background: var(--primary);
         }
 
         .games-grid {
@@ -327,7 +292,7 @@
                 font-size: 1rem;
             }
 
-            .feature-card, .game-card {
+            .game-card {
                 padding: 20px;
             }
         }
@@ -349,8 +314,6 @@
                     <ul>
                         <li><a href="#">Home</a></li>
                         <li><a href="#">Games</a></li>
-                        <li><a href="#">Tournaments</a></li>
-                        <li><a href="#">Leaderboards</a></li>
                     </ul>
                 </nav>
             </div>
@@ -363,36 +326,6 @@
             <h1>Welcome to <span style="color: #3498db;">Four0Four</span></h1>
             <p>Your ultimate gaming destination with the latest games, tournaments, and an amazing community of players from around the world.</p>
             <a href="#" class="cta-button">Explore Games</a>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section class="features">
-        <div class="container">
-            <h2 class="section-title">Our Features</h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-trophy"></i>
-                    </div>
-                    <h3>Competitive Tournaments</h3>
-                    <p>Join our weekly tournaments with cash prizes and exclusive rewards for top players.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <h3>Active Community</h3>
-                    <p>Connect with thousands of gamers, join clans, and make new friends in our community.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-gamepad"></i>
-                    </div>
-                    <h3>Latest Games</h3>
-                    <p>Access a huge library of the newest and most popular games across all platforms.</p>
-                </div>
-            </div>
         </div>
     </section>
 
