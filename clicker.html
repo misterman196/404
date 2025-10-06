@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Emoji Cookie Clicker</title>
+    <title>Cookie Clicker Deluxe</title>
     <style>
         * {
             margin: 0;
@@ -71,7 +71,36 @@
             color: #ffeb3b;
         }
         
-        .upgrades {
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 15px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .tab.active {
+            background: rgba(255, 255, 255, 0.2);
+            font-weight: bold;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .upgrades-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 15px;
@@ -107,6 +136,11 @@
             background: rgba(255, 255, 255, 0.15);
         }
         
+        .upgrade.unlocked {
+            border-color: #4caf50;
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+        }
+        
         .upgrade-icon {
             font-size: 2.5rem;
             margin-bottom: 10px;
@@ -117,6 +151,12 @@
             margin-bottom: 5px;
         }
         
+        .upgrade-description {
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            opacity: 0.8;
+        }
+        
         .upgrade-cost {
             color: #ffeb3b;
             font-weight: bold;
@@ -125,35 +165,6 @@
         .upgrade-owned {
             font-size: 0.9rem;
             opacity: 0.8;
-        }
-        
-        .tabs {
-            display: flex;
-            margin-bottom: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        
-        .tab {
-            flex: 1;
-            text-align: center;
-            padding: 15px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        
-        .tab.active {
-            background: rgba(255, 255, 255, 0.2);
-            font-weight: bold;
-        }
-        
-        .tab-content {
-            display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
         }
         
         .skill-tree {
@@ -217,67 +228,6 @@
             font-weight: bold;
         }
         
-        .auto-clickers {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
-        }
-        
-        .auto-clicker {
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 10px;
-            padding: 15px;
-            text-align: center;
-            transition: all 0.3s;
-            cursor: pointer;
-            border: 2px solid transparent;
-        }
-        
-        .auto-clicker:hover {
-            background: rgba(255, 255, 255, 0.25);
-            transform: translateY(-5px);
-        }
-        
-        .auto-clicker:active {
-            transform: translateY(0);
-        }
-        
-        .auto-clicker.disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        
-        .auto-clicker.disabled:hover {
-            transform: none;
-            background: rgba(255, 255, 255, 0.15);
-        }
-        
-        .auto-clicker-icon {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-        }
-        
-        .auto-clicker-title {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        
-        .auto-clicker-description {
-            font-size: 0.9rem;
-            margin-bottom: 10px;
-            opacity: 0.8;
-        }
-        
-        .auto-clicker-cost {
-            color: #ffeb3b;
-            font-weight: bold;
-        }
-        
-        .auto-clicker-owned {
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
-        
         @media (max-width: 768px) {
             .stats {
                 flex-direction: column;
@@ -288,7 +238,7 @@
                 font-size: 8rem;
             }
             
-            .upgrades, .skill-tree, .auto-clickers {
+            .upgrades-grid, .skill-tree {
                 grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             }
         }
@@ -298,7 +248,7 @@
                 font-size: 6rem;
             }
             
-            .upgrades, .skill-tree, .auto-clickers {
+            .upgrades-grid, .skill-tree {
                 grid-template-columns: 1fr;
             }
         }
@@ -326,12 +276,20 @@
             font-size: 0.9rem;
             opacity: 0.7;
         }
+        
+        .achievement {
+            background: rgba(255, 215, 0, 0.2);
+            border: 1px solid gold;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 5px 0;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>🍪 Emoji Cookie Clicker</h1>
+            <h1>🍪 Cookie Clicker Deluxe</h1>
             <p>Click the cookie and unlock upgrades to bake more cookies!</p>
         </header>
         
@@ -352,13 +310,13 @@
         </div>
         
         <div class="tabs">
-            <div class="tab active" data-tab="upgrades">Upgrades</div>
+            <div class="tab active" data-tab="upgrades">All Upgrades</div>
             <div class="tab" data-tab="skill-tree">Skill Tree</div>
-            <div class="tab" data-tab="auto-clickers">Auto Clickers</div>
+            <div class="tab" data-tab="achievements">Achievements</div>
         </div>
         
         <div class="tab-content active" id="upgrades-tab">
-            <div class="upgrades" id="upgrades-container">
+            <div class="upgrades-grid" id="upgrades-container">
                 <!-- Upgrades will be populated by JavaScript -->
             </div>
         </div>
@@ -369,9 +327,9 @@
             </div>
         </div>
         
-        <div class="tab-content" id="auto-clickers-tab">
-            <div class="auto-clickers" id="auto-clickers-container">
-                <!-- Auto clickers will be populated by JavaScript -->
+        <div class="tab-content" id="achievements-tab">
+            <div id="achievements-container">
+                <!-- Achievements will be populated by JavaScript -->
             </div>
         </div>
         
@@ -392,29 +350,91 @@
             cookiesPerSecond: 0,
             upgrades: {},
             skills: {},
-            autoClickers: {},
-            lastSave: Date.now()
+            achievements: {},
+            lastSave: Date.now(),
+            totalCookies: 0,
+            totalClicks: 0
         };
 
-        // Upgrade definitions
+        // All upgrades (click and auto)
         const upgrades = [
+            // Click upgrades
+            {
+                id: 'better-fingers',
+                name: 'Better Fingers',
+                icon: '👆',
+                description: 'Clicks are 2x more powerful',
+                baseCost: 10,
+                costMultiplier: 1.5,
+                type: 'click',
+                effect: { cookiesPerClickMultiplier: 2 },
+                maxLevel: 20
+            },
+            {
+                id: 'warm-mittens',
+                name: 'Warm Mittens',
+                icon: '🧤',
+                description: 'Clicks are 5x more powerful',
+                baseCost: 100,
+                costMultiplier: 1.5,
+                type: 'click',
+                effect: { cookiesPerClickMultiplier: 5 },
+                maxLevel: 10
+            },
+            {
+                id: 'reinforced-index',
+                name: 'Reinforced Index',
+                icon: '💪',
+                description: 'Clicks are 10x more powerful',
+                baseCost: 500,
+                costMultiplier: 1.5,
+                type: 'click',
+                effect: { cookiesPerClickMultiplier: 10 },
+                maxLevel: 5
+            },
+            {
+                id: 'caramel-tools',
+                name: 'Caramel Tools',
+                icon: '🔧',
+                description: 'Clicks are 20x more powerful',
+                baseCost: 5000,
+                costMultiplier: 1.5,
+                type: 'click',
+                effect: { cookiesPerClickMultiplier: 20 },
+                maxLevel: 5
+            },
+            {
+                id: 'sugar-gloves',
+                name: 'Sugar Gloves',
+                icon: '🧤',
+                description: 'Clicks are 50x more powerful',
+                baseCost: 50000,
+                costMultiplier: 1.5,
+                type: 'click',
+                effect: { cookiesPerClickMultiplier: 50 },
+                maxLevel: 5
+            },
+            
+            // Auto-clicker upgrades
             {
                 id: 'cursor',
                 name: 'Cursor',
                 icon: '👆',
-                description: 'Clicks better',
+                description: 'Autoclicks once every 10 seconds',
                 baseCost: 15,
                 costMultiplier: 1.15,
-                effect: { cookiesPerClick: 0.1 },
+                type: 'auto',
+                effect: { cookiesPerSecond: 0.1 },
                 maxLevel: 100
             },
             {
                 id: 'grandma',
                 name: 'Grandma',
                 icon: '👵',
-                description: 'Bakes cookies for you',
+                description: 'A nice grandma to bake cookies for you',
                 baseCost: 100,
                 costMultiplier: 1.15,
+                type: 'auto',
                 effect: { cookiesPerSecond: 1 },
                 maxLevel: 50
             },
@@ -425,6 +445,7 @@
                 description: 'Grows cookie plants',
                 baseCost: 1100,
                 costMultiplier: 1.15,
+                type: 'auto',
                 effect: { cookiesPerSecond: 8 },
                 maxLevel: 25
             },
@@ -432,9 +453,10 @@
                 id: 'mine',
                 name: 'Mine',
                 icon: '⛏️',
-                description: 'Mines cookie ore',
+                description: 'Mines cookie dough and chocolate chips',
                 baseCost: 12000,
                 costMultiplier: 1.15,
+                type: 'auto',
                 effect: { cookiesPerSecond: 47 },
                 maxLevel: 20
             },
@@ -445,6 +467,7 @@
                 description: 'Produces cookies en masse',
                 baseCost: 130000,
                 costMultiplier: 1.15,
+                type: 'auto',
                 effect: { cookiesPerSecond: 260 },
                 maxLevel: 15
             },
@@ -455,8 +478,20 @@
                 description: 'Generates cookies from interest',
                 baseCost: 1400000,
                 costMultiplier: 1.15,
+                type: 'auto',
                 effect: { cookiesPerSecond: 1400 },
                 maxLevel: 10
+            },
+            {
+                id: 'temple',
+                name: 'Temple',
+                icon: '🛕',
+                description: 'Full of ancient cookie-baking wisdom',
+                baseCost: 20000000,
+                costMultiplier: 1.15,
+                type: 'auto',
+                effect: { cookiesPerSecond: 7800 },
+                maxLevel: 5
             }
         ];
 
@@ -518,47 +553,61 @@
             }
         ];
 
-        // Auto clicker definitions
-        const autoClickers = [
+        // Achievements
+        const achievements = [
             {
-                id: 'auto-cursor',
-                name: 'Auto Cursor',
-                icon: '🤖👆',
-                description: 'Automatically clicks for you',
-                baseCost: 100,
-                costMultiplier: 1.2,
-                effect: { clicksPerSecond: 0.2 },
-                maxLevel: 50
+                id: 'first-click',
+                name: 'First Click',
+                description: 'Click the cookie for the first time',
+                icon: '🍪',
+                condition: (state) => state.totalClicks >= 1,
+                reward: 10
             },
             {
-                id: 'cookie-bot',
-                name: 'Cookie Bot',
-                icon: '🤖🍪',
-                description: 'Advanced cookie clicking robot',
-                baseCost: 500,
-                costMultiplier: 1.25,
-                effect: { clicksPerSecond: 1 },
-                maxLevel: 30
+                id: 'hundred-clicks',
+                name: 'Hundred Clicks',
+                description: 'Click the cookie 100 times',
+                icon: '💯',
+                condition: (state) => state.totalClicks >= 100,
+                reward: 100
             },
             {
-                id: 'cookie-drone',
-                name: 'Cookie Drone',
-                icon: '🚁🍪',
-                description: 'Flying cookie collector',
-                baseCost: 2000,
-                costMultiplier: 1.3,
-                effect: { clicksPerSecond: 5 },
-                maxLevel: 20
+                id: 'thousand-clicks',
+                name: 'Thousand Clicks',
+                description: 'Click the cookie 1000 times',
+                icon: '👑',
+                condition: (state) => state.totalClicks >= 1000,
+                reward: 1000
             },
             {
-                id: 'cookie-ai',
-                name: 'Cookie AI',
-                icon: '🧠🍪',
-                description: 'Artificial intelligence for optimal cookie production',
-                baseCost: 10000,
-                costMultiplier: 1.4,
-                effect: { clicksPerSecond: 20 },
-                maxLevel: 10
+                id: 'first-upgrade',
+                name: 'First Upgrade',
+                description: 'Purchase your first upgrade',
+                icon: '⭐',
+                condition: (state) => Object.keys(state.upgrades).length > 0,
+                reward: 50
+            },
+            {
+                id: 'cookie-tycoon',
+                name: 'Cookie Tycoon',
+                description: 'Own 10 upgrades',
+                icon: '💰',
+                condition: (state) => {
+                    let count = 0;
+                    for (let id in state.upgrades) {
+                        count += state.upgrades[id];
+                    }
+                    return count >= 10;
+                },
+                reward: 500
+            },
+            {
+                id: 'millionaire',
+                name: 'Cookie Millionaire',
+                description: 'Have 1,000,000 cookies',
+                icon: '🤑',
+                condition: (state) => state.totalCookies >= 1000000,
+                reward: 10000
             }
         ];
 
@@ -569,7 +618,7 @@
         const cookiesPerClickElement = document.getElementById('cookies-per-click');
         const upgradesContainer = document.getElementById('upgrades-container');
         const skillTreeContainer = document.getElementById('skill-tree-container');
-        const autoClickersContainer = document.getElementById('auto-clickers-container');
+        const achievementsContainer = document.getElementById('achievements-container');
         const tabs = document.querySelectorAll('.tab');
         const tabContents = document.querySelectorAll('.tab-content');
         const notification = document.getElementById('notification');
@@ -579,7 +628,7 @@
             loadGame();
             renderUpgrades();
             renderSkillTree();
-            renderAutoClickers();
+            renderAchievements();
             updateUI();
             
             // Set up game loop
@@ -602,20 +651,28 @@
         // Game loop
         function gameLoop() {
             // Calculate cookies from auto-clickers
-            let totalClicksPerSecond = 0;
-            for (const autoClickerId in gameState.autoClickers) {
-                const autoClicker = autoClickers.find(a => a.id === autoClickerId);
-                const level = gameState.autoClickers[autoClickerId];
-                totalClicksPerSecond += autoClicker.effect.clicksPerSecond * level;
+            let totalCPS = 0;
+            for (const upgradeId in gameState.upgrades) {
+                const upgrade = upgrades.find(u => u.id === upgradeId);
+                if (upgrade && upgrade.type === 'auto') {
+                    const level = gameState.upgrades[upgradeId];
+                    totalCPS += upgrade.effect.cookiesPerSecond * level;
+                }
             }
             
-            // Add cookies from auto-clickers
-            gameState.cookies += totalClicksPerSecond * (1/10); // 10 updates per second
+            // Apply global multiplier from skills
+            if (gameState.skills['cookie-multiplier']) {
+                totalCPS *= 2;
+            }
             
-            // Add cookies from upgrades (cookies per second)
-            gameState.cookies += gameState.cookiesPerSecond * (1/10);
+            gameState.cookiesPerSecond = totalCPS;
+            
+            // Add cookies from auto-clickers
+            gameState.cookies += totalCPS * (1/10); // 10 updates per second
+            gameState.totalCookies += totalCPS * (1/10);
             
             updateUI();
+            checkAchievements();
         }
 
         // Handle cookie click
@@ -629,7 +686,11 @@
             }
             
             gameState.cookies += cookiesToAdd;
+            gameState.totalCookies += cookiesToAdd;
+            gameState.totalClicks++;
+            
             updateUI();
+            checkAchievements();
             
             // Add visual feedback
             cookieElement.style.transform = 'scale(0.95)';
@@ -652,16 +713,13 @@
                 gameState.upgrades[upgradeId] = (gameState.upgrades[upgradeId] || 0) + 1;
                 
                 // Apply upgrade effects
-                if (upgrade.effect.cookiesPerClick) {
-                    gameState.cookiesPerClick += upgrade.effect.cookiesPerClick;
-                }
-                
-                if (upgrade.effect.cookiesPerSecond) {
-                    gameState.cookiesPerSecond += upgrade.effect.cookiesPerSecond;
+                if (upgrade.type === 'click' && upgrade.effect.cookiesPerClickMultiplier) {
+                    gameState.cookiesPerClick *= upgrade.effect.cookiesPerClickMultiplier;
                 }
                 
                 updateUI();
                 renderUpgrades();
+                checkAchievements();
                 showNotification(`Purchased ${upgrade.name} level ${gameState.upgrades[upgradeId]}!`, 2000);
             }
         }
@@ -684,46 +742,16 @@
                     gameState.cookiesPerClick *= skill.effect.cookiesPerClickMultiplier;
                 }
                 
-                if (skill.effect.globalMultiplier) {
-                    // This would require recalculating all production
-                    // For simplicity, we'll just double the current values
-                    gameState.cookiesPerClick *= skill.effect.globalMultiplier;
-                    gameState.cookiesPerSecond *= skill.effect.globalMultiplier;
-                }
-                
                 updateUI();
                 renderSkillTree();
+                checkAchievements();
                 showNotification(`Unlocked ${skill.name}!`, 2000);
-            }
-        }
-
-        // Buy an auto clicker
-        function buyAutoClicker(autoClickerId) {
-            const autoClicker = autoClickers.find(a => a.id === autoClickerId);
-            const currentLevel = gameState.autoClickers[autoClickerId] || 0;
-            
-            if (currentLevel >= autoClicker.maxLevel) return;
-            
-            const cost = calculateAutoClickerCost(autoClicker, currentLevel);
-            
-            if (gameState.cookies >= cost) {
-                gameState.cookies -= cost;
-                gameState.autoClickers[autoClickerId] = (gameState.autoClickers[autoClickerId] || 0) + 1;
-                
-                updateUI();
-                renderAutoClickers();
-                showNotification(`Purchased ${autoClicker.name} level ${gameState.autoClickers[autoClickerId]}!`, 2000);
             }
         }
 
         // Calculate upgrade cost
         function calculateUpgradeCost(upgrade, currentLevel) {
             return Math.floor(upgrade.baseCost * Math.pow(upgrade.costMultiplier, currentLevel));
-        }
-
-        // Calculate auto clicker cost
-        function calculateAutoClickerCost(autoClicker, currentLevel) {
-            return Math.floor(autoClicker.baseCost * Math.pow(autoClicker.costMultiplier, currentLevel));
         }
 
         // Render upgrades
@@ -737,7 +765,7 @@
                 const maxLevelReached = currentLevel >= upgrade.maxLevel;
                 
                 const upgradeElement = document.createElement('div');
-                upgradeElement.className = `upgrade ${!canAfford || maxLevelReached ? 'disabled' : ''}`;
+                upgradeElement.className = `upgrade ${!canAfford || maxLevelReached ? 'disabled' : ''} ${currentLevel > 0 ? 'unlocked' : ''}`;
                 upgradeElement.onclick = () => !maxLevelReached && canAfford && buyUpgrade(upgrade.id);
                 
                 upgradeElement.innerHTML = `
@@ -778,31 +806,49 @@
             });
         }
 
-        // Render auto clickers
-        function renderAutoClickers() {
-            autoClickersContainer.innerHTML = '';
+        // Render achievements
+        function renderAchievements() {
+            achievementsContainer.innerHTML = '';
             
-            autoClickers.forEach(autoClicker => {
-                const currentLevel = gameState.autoClickers[autoClicker.id] || 0;
-                const cost = calculateAutoClickerCost(autoClicker, currentLevel);
-                const canAfford = gameState.cookies >= cost;
-                const maxLevelReached = currentLevel >= autoClicker.maxLevel;
+            achievements.forEach(achievement => {
+                const isUnlocked = gameState.achievements[achievement.id];
                 
-                const autoClickerElement = document.createElement('div');
-                autoClickerElement.className = `auto-clicker ${!canAfford || maxLevelReached ? 'disabled' : ''}`;
-                autoClickerElement.onclick = () => !maxLevelReached && canAfford && buyAutoClicker(autoClicker.id);
+                const achievementElement = document.createElement('div');
+                achievementElement.className = `achievement ${isUnlocked ? 'unlocked' : ''}`;
                 
-                autoClickerElement.innerHTML = `
-                    <div class="auto-clicker-icon">${autoClicker.icon}</div>
-                    <div class="auto-clicker-title">${autoClicker.name}</div>
-                    <div class="auto-clicker-description">${autoClicker.description}</div>
-                    <div class="auto-clicker-cost">Cost: ${formatNumber(cost)} cookies</div>
-                    <div class="auto-clicker-owned">Level: ${currentLevel}/${autoClicker.maxLevel}</div>
-                    <div class="auto-clicker-effect">${autoClicker.effect.clicksPerSecond * currentLevel} clicks/sec</div>
+                achievementElement.innerHTML = `
+                    <div style="display: flex; align-items: center;">
+                        <div style="font-size: 2rem; margin-right: 10px;">${achievement.icon}</div>
+                        <div>
+                            <div class="skill-title">${achievement.name}</div>
+                            <div class="skill-description">${achievement.description}</div>
+                            <div>Reward: ${formatNumber(achievement.reward)} cookies</div>
+                            <div>Status: ${isUnlocked ? 'Unlocked' : 'Locked'}</div>
+                        </div>
+                    </div>
                 `;
                 
-                autoClickersContainer.appendChild(autoClickerElement);
+                achievementsContainer.appendChild(achievementElement);
             });
+        }
+
+        // Check achievements
+        function checkAchievements() {
+            let newAchievements = false;
+            
+            achievements.forEach(achievement => {
+                if (!gameState.achievements[achievement.id] && achievement.condition(gameState)) {
+                    gameState.achievements[achievement.id] = true;
+                    gameState.cookies += achievement.reward;
+                    newAchievements = true;
+                    showNotification(`Achievement Unlocked: ${achievement.name}! +${formatNumber(achievement.reward)} cookies`, 3000);
+                }
+            });
+            
+            if (newAchievements) {
+                renderAchievements();
+                updateUI();
+            }
         }
 
         // Update UI
@@ -843,7 +889,9 @@
 
         // Format numbers for display
         function formatNumber(num) {
-            if (num >= 1000000) {
+            if (num >= 1000000000) {
+                return (num / 1000000000).toFixed(2) + 'B';
+            } else if (num >= 1000000) {
                 return (num / 1000000).toFixed(2) + 'M';
             } else if (num >= 1000) {
                 return (num / 1000).toFixed(2) + 'K';
@@ -863,7 +911,9 @@
         function loadGame() {
             const save = localStorage.getItem('cookieClickerSave');
             if (save) {
-                gameState = JSON.parse(save);
+                const loadedState = JSON.parse(save);
+                // Merge with default state to ensure all properties exist
+                gameState = {...gameState, ...loadedState};
                 showNotification('Game loaded!', 2000);
             }
         }
